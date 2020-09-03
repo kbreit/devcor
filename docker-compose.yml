@@ -1,0 +1,30 @@
+---
+version: "3.7"
+services:
+  crm1:
+    build: "."
+    image: "crm:latest"
+    ports:
+      - "5001:5000/tcp"
+    volumes:
+      - type: "bind"
+        source: "./src"
+        target: "/src"
+  crm2:
+    build: "."
+    image: "crm:latest"
+    ports:
+      - "5002:5000/tcp"
+    volumes:
+      - type: "bind"
+        source: "./src"
+        target: "/src"
+  crm3:
+    build: "."
+    image: "crm:latest"
+    ports:
+      - "5003:5000/tcp"
+    volumes:
+      - type: "bind"
+        source: "./src"
+        target: "/src"
