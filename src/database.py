@@ -57,3 +57,9 @@ class Database:
             # return int(acct["due"]) - int(acct["paid"])
 
         return None
+
+    def owes_money(self, acct_id):
+        acct = self.data.get(acct_id)
+        if acct:
+            return int(acct['due']) - int(acct['paid']) > 0
+        return None
