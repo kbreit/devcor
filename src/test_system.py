@@ -33,8 +33,8 @@ def test_post_bad_acct(kwargs):
 
 def _post_acct(kwargs, acct):
     kwargs["headers"].update(
-        {"Content-Type": "applicatin/x-www-form-urlencoded"})
-    resp = requests.post(**kwargs, data=f"accid={acct['acctid']}")
+        {"Content-Type": "application/x-www-form-urlencoded"})
+    resp = requests.post(**kwargs, data=f"acctid={acct['acctid']}")
     assert resp.status_code == 200
     balance = acct.get("acctbal")
     if balance:
