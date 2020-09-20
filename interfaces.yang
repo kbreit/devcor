@@ -1,0 +1,47 @@
+module interfaces {
+  yang-version "1.1";
+  namespace "https://yang.globomantics.com/interfaces";
+  prefix "interfaces";
+  typedef vlan-type {
+    type uint16 {
+      range 1..4094;
+    }
+    description "Valid VLAN range";
+  }
+
+  grouping interface-basic-grouping {
+    description "Common characteristics of all interfaces";
+    leaf name {
+      type string;
+      description "Name of the interface";
+    }
+    leaf enabled {
+      type boolean;
+      default "false";
+      description "True if interface is enabled, false otherwise";
+    }
+  }
+
+  container interface-container {
+    list switchport-list {
+      description "List of physical switchports";
+      key "name";
+      uses "interface-basic-grouping";
+      leaf vlan {
+        type vlan-type;
+        description "VLAN assigned to switchport";
+        default 1;
+      }
+    }
+    list virtual-list {
+      description "List of virtual interfaces";
+      key "name";
+      uses "interface-basic-grouping";
+      leaf ip_address {
+        type string;
+        description "IP address assigned to interface";
+        default "0.0.0.0";
+      }
+    }
+  }
+}

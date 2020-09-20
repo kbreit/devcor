@@ -1,4 +1,7 @@
+bandit
 flask
 requests
 mysqlclient
 SQLAlchemy
+pytest
+pylint

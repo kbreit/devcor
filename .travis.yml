@@ -1,0 +1,27 @@
+---
+dist: "xenial"
+language: "python"
+python:
+  - "3.7"
+
+services:
+  - docker
+
+install:
+  - "pip install -r requirements.txt"
+  - "./make_cert.sh"
+
+before_script:
+  - "pylint src/*.py"
+  - "bandit src/*.py --skip B101"
+  - "pytest --verbose src/test_unit.py"
+  - "docker-compose up --detach"
+  - "docker container ls"
+  - "./wait_for_https.sh 60"
+
+script:
+  - "pytest --verbose src/test_system.py"
+
+after_script:
+  - "docker-compose down --volumes"
+
