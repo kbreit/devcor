@@ -12,7 +12,7 @@ install:
   - "./make_cert.sh"
 
 before_script:
-  - "pylint src/*.py"
+  #  - "pylint src/*.py"
   - "bandit src/*.py --skip B101"
   - "pytest --verbose src/test_unit.py"
   - "docker-compose up --detach"
