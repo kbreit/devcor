@@ -2,6 +2,7 @@
 
 import requests
 import pytest
+from bs4 import BeautifulSoup
 
 @pytest.fixture()
 def kwargs():
@@ -33,12 +34,21 @@ def test_post_bad_acct(kwargs):
 
 def _post_acct(kwargs, acct):
     kwargs["headers"].update(
-        {"Content-Type": "application/x-www-form-urlencoded"})
-    resp = requests.post(**kwargs, data=f"acctid={acct['acctid']}")
-    assert resp.status_code == 200
+        {"Content-Type": "application/x-www-form-urlencoded",
+         "Referer": kwargs["url"],
+        }
+    )
+    sess = requests.session()
+    get_resp = sess.get(**kwargs)
+    soup = BeautifulSoup(get_resp.text, "html.parser")
+    csrf = soup.find("input", {"name": "csrf_token"})
+    csrf_token = csrf["value"]
+    data = f"csrf_token={csrf_token}&acctid={acct['acctid']}"
+    post_resp = sess.post(**kwargs, data=data)
+    assert post_resp.status_code == 200
     balance = acct.get("acctbal")
     if balance:
-        assert f"Account balance: {balance}" in resp.text
+        assert f"Account balance: {balance}" in post_resp.text
     else:
-        assert "Unknown account number" in resp.text
+        assert "Unknown account number" in post_resp.text
 

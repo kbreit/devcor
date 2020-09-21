@@ -1,3 +1,4 @@
+bs4
 bandit
 flask
 requests
@@ -5,3 +6,4 @@ mysqlclient
 SQLAlchemy
 pytest
 pylint
+Flask_WTF

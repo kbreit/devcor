@@ -11,10 +11,12 @@ from flask import Flask, render_template, request
 from database import Database
 from sqlalchemy import exc 
 from MySQLdb import _exceptions
+from flask_wtf.csrf import CSRFProtect
 
 # Create Flask object
 app = Flask(__name__)
 db = Database("mysql://root:globomantics@db/db", "data/initial.json")
+csrf = CSRFProtect(app)
 
 @app.before_request
 def before_request():
@@ -63,6 +65,7 @@ def index():
 
 
 if __name__ == "__main__":
-    ctx = ("../ssl/cert.pem", "../ssl/key.pem") 
+    ctx = ("../ssl/cert.pem", "../ssl/key.pem")
+    app.secret_key = os.urandom(24)
     app.run(host="0.0.0.0", debug=True, use_reloader=False, ssl_context=ctx) # nosec
 
